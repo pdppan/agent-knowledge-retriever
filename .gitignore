@@ -1,0 +1,73 @@
+###########################
+# BUILD ARTIFACTS (Maven) #
+###########################
+# Ignore the entire target directory where compiled classes, JARs, and WARs reside
+/target/
+
+# Files generated during the build process
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.nar
+
+###########################
+# MAVEN WRAPPER (.mvn)    #
+###########################
+# The wrapper files (mvnw, mvnw.cmd) and the .mvn/ folder are generally committed
+# BUT, we ignore the timing file which changes with every build.
+.mvn/timing.properties
+
+###########################
+# COMPILED/GENERATED FILES #
+###########################
+# Compiled classes
+*.class
+
+# Log files and temporary files
+*.log
+logs/
+*.tmp
+hs_err_pid* # JVM crash logs
+
+###########################
+# IDE / EDITOR SETTINGS   #
+###########################
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+/out/
+
+# Eclipse
+.classpath
+.project
+.settings/
+bin/
+tmp/
+.metadata
+.loadpath
+.recommenders
+
+# Visual Studio Code
+.vscode/
+
+###########################
+# OPERATING SYSTEM FILES  #
+###########################
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db

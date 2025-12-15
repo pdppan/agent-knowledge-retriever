@@ -1,0 +1,49 @@
+# cloudbuild.yaml
+steps:
+# 1. Continuous Integration: Build, Compile, and RUN TESTS
+# The 'install' goal ensures that all unit tests (in src/test/) are executed.
+- name: 'maven:3.9.5-eclipse-temurin-17-focal'
+  entrypoint: 'mvn'
+  args: ['clean', 'install']  # 'install' executes tests by default
+  id: 'Run Unit Tests'
+
+# 2. Containerization: Build the Docker Image
+# This step uses the successful JAR created in Step 1 and the Dockerfile (multi-stage)
+- name: 'gcr.io/cloud-builders/docker'
+  args: [
+    'build', 
+    '-t', 
+    'us-east1-docker.pkg.dev/$PROJECT_ID/wf-hackathon-repo/knowledge-agent:latest',
+    '.'
+  ]
+  id: 'Build Docker Image'
+
+# 3. Artifact Management: Push the Image to Artifact Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: [
+    'push', 
+    'us-east1-docker.pkg.dev/$PROJECT_ID/wf-hackathon-repo/knowledge-agent:latest'
+  ]
+  id: 'Push to Artifact Registry'
+
+# 4. Continuous Deployment: Deploy the Image to Cloud Run
+# This only runs if the previous steps (including testing) were successful.
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args: [
+    'run',
+    'deploy',
+    'wf-knowledge-agent-service',
+    '--image',
+    'us-east1-docker.pkg.dev/$PROJECT_ID/wf-hackathon-repo/knowledge-agent:latest',
+    '--region',
+    'us-east1',
+    '--platform',
+    'managed',
+    '--allow-unauthenticated'
+  ]
+  id: 'Deploy to Cloud Run'
+
+# Specifies the final image to be stored in the Artifact Registry
+images:
+- 'us-east1-docker.pkg.dev/$PROJECT_ID/wf-hackathon-repo/knowledge-agent:latest'
